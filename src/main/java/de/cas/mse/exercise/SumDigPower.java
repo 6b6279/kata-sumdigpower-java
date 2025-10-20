@@ -5,37 +5,40 @@ import java.util.List;
 
 public class SumDigPower {
 
-	public List<Long> sumDigPow(long a, long b) {
+	public List<Long> findEurekas(long intervalStart, long intervalEnd) {
 
-		List<Long> result = new ArrayList<Long>();
+		List<Long> eurekas = new ArrayList<Long>();
 
-		for (long i = a; i < b; i++) {
+		for (long number = intervalStart; number < intervalEnd; number++) {
 
-			List<Long> longs = new ArrayList<Long>();
+			List<Long> digits = extractDigits(Long.toString(number));
 
-			String temp = Long.toString(i);
+			long sum = sumDigitsPower(digits);
 
-			// Split values
-			for (int j = 0; j < temp.length(); j++) {
-				longs.add(Long.valueOf(temp.substring(j, j + 1)));
-			}
-
-			// Create sum
-			long sum = 0;
-			for (int j = 1; j <= longs.size(); j++) {
-				sum += Math.pow(longs.get(j - 1), j);
-			}
-
-			// Test if sum is equal
-			if (sum == i) {
-				result.add(sum);
+			if (sum == number) {
+				eurekas.add(sum);
 			}
 
 		}
 
-        System.out.println(result);
-		return result;
+        System.out.println(eurekas);
+		return eurekas;
 
 	}
 
+	private List<Long> extractDigits(String number) {
+		List<Long> digits = new ArrayList<Long>();
+		for (int digitIndex = 0; digitIndex < number.length(); digitIndex++) {
+			digits.add(Long.valueOf(number.substring(digitIndex, digitIndex + 1)));
+		}
+		return digits;
+	}
+	
+	private long sumDigitsPower(List<Long> digits) {
+		long sum = 0;
+		for (int digitIndex = 0; digitIndex < digits.size(); digitIndex++) {
+			sum += Math.pow(digits.get(digitIndex), digitIndex + 1);
+		}
+		return sum;
+	}
 }
