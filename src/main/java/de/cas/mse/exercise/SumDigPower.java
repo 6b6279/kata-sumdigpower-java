@@ -5,37 +5,44 @@ import java.util.List;
 
 public class SumDigPower {
 
-	public List<Long> sumDigPow(long a, long b) {
+	public List<Long> sumDigPow(long lowerBoundary, long upperBoundary) {
 
-		List<Long> result = new ArrayList<Long>();
+		List<Long> eurekaNumbers = new ArrayList<Long>();
 
-		for (long i = a; i < b; i++) {
+		for (long number = lowerBoundary; number < upperBoundary; number++) {
 
-			List<Long> longs = new ArrayList<Long>();
+			List<Long> digits = splitNumbertoDigits(number);
 
-			String temp = Long.toString(i);
+			long sum = calculateEurekaSum(digits);
 
-			// Split values
-			for (int j = 0; j < temp.length(); j++) {
-				longs.add(Long.valueOf(temp.substring(j, j + 1)));
-			}
-
-			// Create sum
-			long sum = 0;
-			for (int j = 1; j <= longs.size(); j++) {
-				sum += Math.pow(longs.get(j - 1), j);
-			}
-
-			// Test if sum is equal
-			if (sum == i) {
-				result.add(sum);
+			if (sum == number) {
+				eurekaNumbers.add(sum);
 			}
 
 		}
 
-        System.out.println(result);
-		return result;
-
+        System.out.println(eurekaNumbers);
+		return eurekaNumbers;
 	}
 
+	private List<Long> splitNumbertoDigits(long number) {
+		List<Long> digits = new ArrayList<Long>();
+		String temp = Long.toString(number);
+
+			for (int i = 0; i < temp.length(); i++) {
+				digits.add(Long.valueOf(temp.substring(i, i + 1)));
+			}
+
+		return digits;
+	}
+
+
+	private long calculateEurekaSum(List<Long> digits) {
+		long sum = 0;
+			for (int i = 1; i <= digits.size(); i++) {
+				sum += Math.pow(digits.get(i - 1), i);
+			}
+
+		return sum;
+	}
 }
