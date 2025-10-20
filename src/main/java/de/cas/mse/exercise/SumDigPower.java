@@ -5,37 +5,37 @@ import java.util.List;
 
 public class SumDigPower {
 
-	public List<Long> sumDigPow(long a, long b) {
+	public List<Long> sumDigPow(long lowerBoundInclusive, long upperBoundExclusive) {
 
-		List<Long> result = new ArrayList<Long>();
+		List<Long> eurekaNumbers = new ArrayList<Long>();
 
-		for (long i = a; i < b; i++) {
+		for (long currentNumber = lowerBoundInclusive; currentNumber < upperBoundExclusive; currentNumber++) {
 
-			List<Long> longs = new ArrayList<Long>();
-
-			String temp = Long.toString(i);
-
-			// Split values
-			for (int j = 0; j < temp.length(); j++) {
-				longs.add(Long.valueOf(temp.substring(j, j + 1)));
-			}
-
-			// Create sum
+			String currentNumberAsString = Long.toString(currentNumber);
+		
 			long sum = 0;
-			for (int j = 1; j <= longs.size(); j++) {
-				sum += Math.pow(longs.get(j - 1), j);
+			for (int digitIndex = 0; digitIndex < currentNumberAsString.length(); digitIndex++) {
+				long digit = getDigit(currentNumberAsString, digitIndex);
+				sum += Math.pow(digit, getDigitExponent(digitIndex));
 			}
 
-			// Test if sum is equal
-			if (sum == i) {
-				result.add(sum);
+			if (sum == currentNumber) {
+				eurekaNumbers.add(sum);
 			}
 
 		}
 
-        System.out.println(result);
-		return result;
+        System.out.println(eurekaNumbers);
+		return eurekaNumbers;
 
+	}
+
+	private int getDigitExponent(int digitIndex) {
+		return digitIndex + 1;
+	}
+
+	private long getDigit(String currentNumber, int index) {
+		return Long.valueOf(currentNumber.substring(index, getDigitExponent(index)));
 	}
 
 }
