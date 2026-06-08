@@ -11,26 +11,29 @@ public class SumDigPower {
 
 		for (long currentNumber = rangeBegin; currentNumber < rangeEnd; currentNumber++) {
 
-			List<Long> digits = new ArrayList<Long>();
-
 			String currentNumberAsString = Long.toString(currentNumber);
 			int numberOfDigits = currentNumberAsString.length();
+			List<Long> digits = new ArrayList<Long>(numberOfDigits);
 
 			// Split into digits
 			for (int currentDigitIndex = 0; currentDigitIndex < numberOfDigits; currentDigitIndex++) {
 				digits.add(Long.valueOf(currentNumberAsString.substring(currentDigitIndex, currentDigitIndex + 1)));
 			}
 
-			// Create sum of powers of digits
-			long sum = 0;
-			for (int currentDigitIndex = 1; currentDigitIndex <= digits.size(); currentDigitIndex++) {
+			// Subtract powers of digits from currentNumber
+			long rest = currentNumber;
+			for (int currentDigitIndex = numberOfDigits; currentDigitIndex > 0; currentDigitIndex--) {
 				// Use natural digit indices, as the lowest power is 1, not 0
-				sum += Math.pow(digits.get(currentDigitIndex - 1), currentDigitIndex);
+				rest -= Math.pow(digits.get(currentDigitIndex - 1), currentDigitIndex);
+				if (rest < 0) {
+					// Power of current digit was too large, condition cannot be fulfilled with further digits!
+					break;
+				}
 			}
 
-			// Test if sum is equal
-			if (sum == currentNumber) {
-				result.add(sum);
+			// Check if the subtraction of powers has rest
+			if (rest == 0) {
+				result.add(currentNumber);
 			}
 
 		}
