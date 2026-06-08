@@ -5,29 +5,31 @@ import java.util.List;
 
 public class SumDigPower {
 
-	public List<Long> sumDigPow(long a, long b) {
+	public List<Long> sumDigPow(long rangeBegin, long rangeEnd) {
 
 		List<Long> result = new ArrayList<Long>();
 
-		for (long i = a; i < b; i++) {
+		for (long currentNumber = rangeBegin; currentNumber < rangeEnd; currentNumber++) {
 
-			List<Long> longs = new ArrayList<Long>();
+			List<Long> digits = new ArrayList<Long>();
 
-			String temp = Long.toString(i);
+			String currentNumberAsString = Long.toString(currentNumber);
+			int numberOfDigits = currentNumberAsString.length();
 
-			// Split values
-			for (int j = 0; j < temp.length(); j++) {
-				longs.add(Long.valueOf(temp.substring(j, j + 1)));
+			// Split into digits
+			for (int currentDigitIndex = 0; currentDigitIndex < numberOfDigits; currentDigitIndex++) {
+				digits.add(Long.valueOf(currentNumberAsString.substring(currentDigitIndex, currentDigitIndex + 1)));
 			}
 
-			// Create sum
+			// Create sum of powers of digits
 			long sum = 0;
-			for (int j = 1; j <= longs.size(); j++) {
-				sum += Math.pow(longs.get(j - 1), j);
+			for (int currentDigitIndex = 1; currentDigitIndex <= digits.size(); currentDigitIndex++) {
+				// Use natural digit indices, as the lowest power is 1, not 0
+				sum += Math.pow(digits.get(currentDigitIndex - 1), currentDigitIndex);
 			}
 
 			// Test if sum is equal
-			if (sum == i) {
+			if (sum == currentNumber) {
 				result.add(sum);
 			}
 
